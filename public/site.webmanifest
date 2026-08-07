@@ -1,0 +1,13 @@
+{
+  "name": "Woman Authority",
+  "short_name": "Woman Authority",
+  "description": "Inspire. Empower. Lead.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f04e7b",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/images/logo.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

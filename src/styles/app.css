@@ -1,0 +1,519 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   DESIGN TOKENS
+   The single source of truth for the Woman Authority visual language.
+   Every colour, radius, shadow and type ramp used across the site resolves
+   back to one of the custom properties declared here.
+   ========================================================================== */
+
+@theme {
+  /* ---- Brand: rose ------------------------------------------------------ */
+  --color-rose-50: #fff1f4;
+  --color-rose-100: #ffe2e8;
+  --color-rose-200: #ffc9d6;
+  --color-rose-300: #ffa1b9;
+  --color-rose-400: #fb6d92;
+  --color-rose-500: #f04e7b;
+  --color-rose-600: #de3566;
+  --color-rose-700: #bb2350;
+  --color-rose-800: #9c2148;
+  --color-rose-900: #851f42;
+
+  /* ---- Brand: blush (warm cream backgrounds) ---------------------------- */
+  --color-blush-50: #fffbfa;
+  --color-blush-100: #fef7f4;
+  --color-blush-200: #fdeeea;
+  --color-blush-300: #fbe3dd;
+  --color-blush-400: #f7d2ca;
+  --color-blush-500: #efb6ab;
+
+  /* ---- Ink -------------------------------------------------------------- */
+  --color-ink-50: #f6f5f4;
+  --color-ink-300: #a8a09b;
+  --color-ink-400: #857d78;
+  --color-ink-500: #6e6763;
+  --color-ink-700: #3a3330;
+  --color-ink-900: #14100f;
+  --color-ink-950: #0c0908;
+
+  /* ---- Typography ------------------------------------------------------- */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Playfair Display', ui-serif, Georgia, Cambria,
+    'Times New Roman', serif;
+  --font-script: 'Dancing Script', 'Segoe Script', cursive;
+
+  /* Fluid display ramp — scales between mobile and wide desktop. Applied via
+     the `text-display-*` utilities below, which also carry the serif family. */
+  --size-display-2xl: clamp(2.5rem, 1.6rem + 4.5vw, 4.5rem);
+  --size-display-xl: clamp(2.125rem, 1.5rem + 3.1vw, 3.5rem);
+  --size-display-lg: clamp(1.75rem, 1.35rem + 2vw, 2.75rem);
+  --size-display-md: clamp(1.5rem, 1.25rem + 1.2vw, 2rem);
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  /* ---- Radii ------------------------------------------------------------ */
+  --radius-card: 0.375rem;
+  --radius-pill: 999px;
+
+  /* ---- Elevation -------------------------------------------------------- */
+  --shadow-soft: 0 1px 2px rgb(20 16 15 / 0.04), 0 8px 24px -12px rgb(20 16 15 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(20 16 15 / 0.04), 0 18px 40px -18px rgb(20 16 15 / 0.16);
+  --shadow-float: 0 24px 60px -24px rgb(133 31 66 / 0.28);
+
+  /* ---- Layout ----------------------------------------------------------- */
+  --container-site: 1200px;
+
+  /* ---- Motion ----------------------------------------------------------- */
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ==========================================================================
+   SEMANTIC SURFACE TOKENS
+   Light and dark themes remap these; components only ever read the semantic
+   name, never a raw palette step.
+   ========================================================================== */
+
+@theme inline {
+  --color-canvas: var(--surface-canvas);
+  --color-surface: var(--surface-raised);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-tint: var(--surface-tint);
+  --color-hairline: var(--surface-hairline);
+  --color-content: var(--content-strong);
+  --color-content-muted: var(--content-muted);
+  --color-content-subtle: var(--content-subtle);
+  --color-brand: var(--brand-base);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-on-brand: var(--brand-on);
+  --color-ring: var(--focus-ring);
+}
+
+:root {
+  --surface-canvas: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-soft: #fef7f4;
+  --surface-tint: #fdeeea;
+  --surface-hairline: #f2e3de;
+  --content-strong: #14100f;
+  --content-muted: #6e6763;
+  --content-subtle: #948b86;
+  --brand-base: #f04e7b;
+  --brand-strong: #de3566;
+  --brand-soft: #ffe2e8;
+  --brand-on: #ffffff;
+  --focus-ring: #f04e7b;
+  color-scheme: light;
+}
+
+.dark {
+  --surface-canvas: #0f0b0a;
+  --surface-raised: #171110;
+  --surface-soft: #1c1513;
+  --surface-tint: #241a19;
+  --surface-hairline: #2f2320;
+  --content-strong: #f8f3f1;
+  --content-muted: #b3a8a3;
+  --content-subtle: #8b807b;
+  --brand-base: #ff7ba0;
+  --brand-strong: #ff9ab5;
+  --brand-soft: #3a1c26;
+  --brand-on: #1a0c11;
+  --focus-ring: #ff7ba0;
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--surface-hairline);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--content-strong);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*
+   * Headings inherit the sans stack. The serif is carried by the
+   * `text-display-*` utilities and by `font-display`, because the design uses
+   * sans for card titles, footer column headings and legal section headings —
+   * a blanket serif rule on h1–h4 would silently override all of those.
+   */
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--content-strong);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* A single, consistent focus treatment across every interactive element. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--brand-soft);
+    color: var(--content-strong);
+  }
+
+  /*
+   * Bright photography glares against the dark theme's near-black surfaces.
+   * Easing brightness and saturation a touch lets photos sit in the page
+   * instead of punching a hole in it; hover restores them to full.
+   */
+  .dark img {
+    filter: brightness(0.9) saturate(0.94);
+    transition: filter 300ms var(--ease-premium);
+  }
+
+  .dark .group:hover img,
+  .dark img:hover {
+    filter: brightness(1) saturate(1);
+  }
+
+  /* Respect the user's motion preference everywhere, including Motion One. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ==========================================================================
+   COMPONENT UTILITIES
+   Small, repeated visual patterns promoted to utilities so pages stay clean.
+   ========================================================================== */
+
+@utility container-site {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--container-site);
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Display type scale — size, rhythm and the serif family in one utility. */
+@utility text-display-2xl {
+  font-family: var(--font-display);
+  font-size: var(--size-display-2xl);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+@utility text-display-xl {
+  font-family: var(--font-display);
+  font-size: var(--size-display-xl);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+@utility text-display-lg {
+  font-family: var(--font-display);
+  font-size: var(--size-display-lg);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+}
+
+@utility text-display-md {
+  font-family: var(--font-display);
+  font-size: var(--size-display-md);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+@utility eyebrow {
+  font-size: var(--text-eyebrow);
+  line-height: 1;
+  letter-spacing: var(--text-eyebrow--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--brand-base);
+}
+
+/*
+ * Lets a grid cell inside `container-site` run to the right edge of the
+ * viewport.
+ *
+ * The offset is the gutter left of the centered container plus its own
+ * inline padding. Deliberately not `50% - 50vw`: percentage margins on a grid
+ * item resolve against the grid *area*, not the container, which over-bleeds.
+ * The parent section must clip overflow — with a visible scrollbar `100vw`
+ * runs a few pixels wide.
+ */
+@utility bleed-right {
+  @media (width >= 64rem) {
+    margin-inline-end: calc(
+      -1 * (max(0px, (100vw - var(--container-site)) / 2) + 2rem)
+    );
+  }
+}
+
+@utility hairline-grid {
+  background-image: linear-gradient(
+      to right,
+      var(--surface-hairline) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--surface-hairline) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+/* Thin scrollbars inside horizontal carousels. */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Long-form article typography (used by the article detail page). */
+@utility prose-authority {
+  color: var(--content-muted);
+  font-size: 0.9375rem;
+  line-height: 1.85;
+
+  & h2 {
+    font-family: var(--font-display);
+    color: var(--content-strong);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin-block: 2.25rem 0.75rem;
+  }
+  & h3 {
+    font-family: var(--font-display);
+    color: var(--content-strong);
+    font-size: 1.1875rem;
+    margin-block: 1.75rem 0.5rem;
+  }
+  & p {
+    margin-block: 0 1.125rem;
+  }
+  & a {
+    color: var(--brand-base);
+    text-underline-offset: 3px;
+    text-decoration-line: underline;
+  }
+  & strong {
+    color: var(--content-strong);
+    font-weight: 600;
+  }
+  & ul,
+  & ol {
+    margin-block: 0 1.25rem;
+    padding-inline-start: 1.15rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  & ul {
+    list-style: none;
+    padding-inline-start: 0;
+  }
+  & ul > li {
+    position: relative;
+    padding-inline-start: 1.15rem;
+  }
+  & ul > li::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0.72em;
+    inset-inline-start: 0.1rem;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--brand-base);
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & blockquote {
+    margin-block: 1.75rem;
+    padding: 1.75rem 1.75rem 1.75rem 3.5rem;
+    background: var(--surface-soft);
+    border-radius: var(--radius-card);
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--content-strong);
+  }
+  & blockquote cite {
+    display: block;
+    margin-block-start: 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-style: normal;
+    color: var(--content-muted);
+  }
+  & figure {
+    margin-block: 1.75rem;
+  }
+  & figure img {
+    border-radius: var(--radius-card);
+    width: 100%;
+  }
+  & figcaption {
+    margin-block-start: 0.625rem;
+    font-size: 0.75rem;
+    color: var(--content-subtle);
+  }
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+@keyframes wa-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes wa-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Radix accordion — height is published as a CSS variable by the primitive. */
+@keyframes accordion-down {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dialog-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+}
+
+@keyframes drawer-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-out-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@utility animate-marquee {
+  animation: wa-marquee 32s linear infinite;
+}
+
+@utility skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--surface-raised) 70%, transparent),
+      transparent
+    );
+    animation: wa-shimmer 1.6s infinite;
+  }
+}
